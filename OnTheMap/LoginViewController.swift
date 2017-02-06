@@ -51,7 +51,6 @@ class LoginViewController: TextViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        
         if loginInProgressing {
             return
         }
@@ -86,6 +85,7 @@ class LoginViewController: TextViewController {
         }
         
         if let js = js, let _ = js["account"] as? [String: Any] {
+            self.textFieldLoginPassword.text = ""
             LoginViewController.showHome(self, dismissCallee: true)
         } else {
             Utils.showAlert(self, title: "Login Error", message: "Invalid Username or Password")
@@ -104,7 +104,9 @@ class LoginViewController: TextViewController {
             return
         }
         
-        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile"], from: self) { (result, error) in
+        let loginMgr = FBSDKLoginManager()
+        //loginMgr.loginBehavior = FBSDKLoginBehavior.native
+        loginMgr.logIn(withReadPermissions: ["public_profile"], from: self) { (result, error) in
             if error != nil || result!.isCancelled {
                 if error != nil {
                     Utils.showAlert(self, title: "Login Error", message: "Error: \(error!.localizedDescription)")
