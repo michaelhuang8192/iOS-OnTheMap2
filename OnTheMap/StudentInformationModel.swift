@@ -22,7 +22,7 @@ class StudentInformationModel {
         }
         
         print("->> getRecentStudentInformationList()")
-        UdacityClient.getInstance().getRecentStudentLocations(cacheOk: false) { error, locs in
+        UdacityClient.getInstance().getRecentStudentLocations() { error, locs in
             if error != nil || locs == nil {
                 self.recentStudentInformationList = nil
             } else {

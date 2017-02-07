@@ -14,7 +14,7 @@ class UdacityClient: NSObject {
     
     let appId: String
     let restId: String
-    var cache: [StudentInformation]! = nil
+    //var cache: [StudentInformation]! = nil
     var me: [String: Any]? = nil
     
     init(appId: String, restId: String) { 
@@ -236,18 +236,8 @@ class UdacityClient: NSObject {
         executeRequest(request: request, callback: callback)
     }
     
-    func getRecentStudentLocations(cacheOk: Bool, callback: @escaping (String?, [StudentInformation]?)->Void) {
-        if cacheOk && cache != nil {
-            DispatchQueue.main.async {
-                callback(nil, self.cache)
-            }
-            return
-        }
-        
-        findStudentLocations(filter: nil, pageNo: 1, numberPerPage: 100, orderBy: "-updatedAt") { error, locs in
-            self.cache = locs
-            callback(error, self.cache)
-        }
+    func getRecentStudentLocations(callback: @escaping (String?, [StudentInformation]?)->Void) {
+        findStudentLocations(filter: nil, pageNo: 1, numberPerPage: 100, orderBy: "-updatedAt", callback: callback)
     }
     
 }
