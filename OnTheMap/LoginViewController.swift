@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FBSDKCoreKit
-import FBSDKLoginKit
 
 class LoginViewController: TextViewController {
 
@@ -81,6 +79,7 @@ class LoginViewController: TextViewController {
         
         if error != nil || js == nil {
             Utils.showAlert(self, title: "Login Error", message: "Network Error")
+            print("login error: \(error), \(js)")
             return
         }
         
@@ -88,7 +87,10 @@ class LoginViewController: TextViewController {
             self.textFieldLoginPassword.text = ""
             LoginViewController.showHome(self, dismissCallee: true)
         } else {
+            UdacityClient.getInstance().logout {_,_ in
+            }
             Utils.showAlert(self, title: "Login Error", message: "Invalid Username or Password")
+            print("login error: \(error), \(js)")
         }
     }
     
@@ -99,23 +101,14 @@ class LoginViewController: TextViewController {
     @IBAction func onClickButtonSignInWithFB(_ sender: Any) {
         enableLoginButton(false)
         
-        if(FBSDKAccessToken.current() != nil) {
-            loginWithFB(FBSDKAccessToken.current().tokenString)
-            return
-        }
-        
-        let loginMgr = FBSDKLoginManager()
-        //loginMgr.loginBehavior = FBSDKLoginBehavior.native
-        loginMgr.logIn(withReadPermissions: ["public_profile"], from: self) { (result, error) in
-            if error != nil || result!.isCancelled {
+        UdacityClient.getInstance().loginFacebook { error, token in
+            if error != nil || token == nil {
                 if error != nil {
-                    Utils.showAlert(self, title: "Login Error", message: "Error: \(error!.localizedDescription)")
-                    print(error!)
+                    Utils.showAlert(self, title: "Login Error", message: "Error: \(error)")
                 }
-                
                 self.enableLoginButton(true)
             } else {
-                self.loginWithFB(FBSDKAccessToken.current().tokenString)
+                self.loginWithFB(token!)
             }
         }
     }

@@ -26,30 +26,30 @@ class MapViewController : UIViewController, SharedViewHelperProtocol, MKMapViewD
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        viewHelper.loadRecentStudentLocations(reloaded: false)
+        viewHelper.loadList()
     }
     
     func updateUI() {
         mapView.removeAnnotations(mapView.annotations)
 
         var annotations = [MKPointAnnotation]()
-        for loc in viewHelper.mLocations {
-            let coordinate = CLLocationCoordinate2D(
-                latitude: CLLocationDegrees(loc.latitude),
-                longitude: CLLocationDegrees(loc.longitude)
-            )
+        if let locs = StudentInformationModel.shared.recentStudentInformationList {
+            for loc in locs {
+                let coordinate = CLLocationCoordinate2D(
+                    latitude: CLLocationDegrees(loc.latitude),
+                    longitude: CLLocationDegrees(loc.longitude)
+                )
             
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(loc.firstName) \(loc.lastName)"
-            annotation.subtitle = loc.mediaURL
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                annotation.title = "\(loc.firstName) \(loc.lastName)"
+                annotation.subtitle = loc.mediaURL
             
-            annotations.append(annotation)
+                annotations.append(annotation)
+            }
         }
-        
         mapView.addAnnotations(annotations)
     }
-    
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "pin"

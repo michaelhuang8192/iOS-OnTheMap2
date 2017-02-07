@@ -151,6 +151,7 @@ class InformationPostingViewController : TextViewController {
                     
                     if let _ = js!["objectId"] as? String {
                         self.dismiss(animated: true)
+                        StudentInformationModel.shared.refresh()
                     } else {
                         Utils.showAlert(self, title: "Information Posting", message: "Unable to Create A Location")
                     }

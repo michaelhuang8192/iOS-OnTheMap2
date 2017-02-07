@@ -15,6 +15,7 @@
 		4E5DF3731E3D628D00111114 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5DF3721E3D628D00111114 /* TextViewController.swift */; };
 		4E64DF081E46E68100FEBF7F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E64DF071E46E68100FEBF7F /* Utils.swift */; };
 		4E64DF121E48194000FEBF7F /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E64DF111E48194000FEBF7F /* StudentInformation.swift */; };
+		4E7A26B31E49CBC700CA485B /* StudentInformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7A26B21E49CBC700CA485B /* StudentInformationModel.swift */; };
 		4E9F3AC31E3C60CE00E20E41 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9F3AC21E3C60CE00E20E41 /* MapKit.framework */; };
 		4E9F3AC51E3C63E200E20E41 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9F3AC41E3C63E200E20E41 /* MapViewController.swift */; };
 		4E9F3AC71E3C68F200E20E41 /* SharedViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9F3AC61E3C68F200E20E41 /* SharedViewHelper.swift */; };
@@ -55,6 +56,7 @@
 		4E5DF3721E3D628D00111114 /* TextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		4E64DF071E46E68100FEBF7F /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		4E64DF111E48194000FEBF7F /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
+		4E7A26B21E49CBC700CA485B /* StudentInformationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformationModel.swift; sourceTree = "<group>"; };
 		4E9F3AC21E3C60CE00E20E41 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4E9F3AC41E3C63E200E20E41 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4E9F3AC61E3C68F200E20E41 /* SharedViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedViewHelper.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				4E5DF3721E3D628D00111114 /* TextViewController.swift */,
 				4E3888941E3DDF5200752051 /* UdacityClient.swift */,
 				4E64DF071E46E68100FEBF7F /* Utils.swift */,
+				4E7A26B21E49CBC700CA485B /* StudentInformationModel.swift */,
 			);
 			path = OnTheMap;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				4E9F3AC71E3C68F200E20E41 /* SharedViewHelper.swift in Sources */,
 				4E9F3AC91E3C6DCE00E20E41 /* ListViewController.swift in Sources */,
 				4E64DF081E46E68100FEBF7F /* Utils.swift in Sources */,
+				4E7A26B31E49CBC700CA485B /* StudentInformationModel.swift in Sources */,
 				4E9F3ACB1E3C7A2C00E20E41 /* InformationPostingViewController.swift in Sources */,
 				4E5DF3731E3D628D00111114 /* TextViewController.swift in Sources */,
 				4EADE6841E3B13AB00BFC9EE /* AppDelegate.swift in Sources */,

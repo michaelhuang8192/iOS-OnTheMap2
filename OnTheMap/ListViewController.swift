@@ -24,33 +24,41 @@ class ListViewController : UITableViewController, SharedViewHelperProtocol {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        viewHelper.loadRecentStudentLocations(reloaded: false)
+        viewHelper.loadList()
     }
     
     func updateUI() {
         self.tableView.reloadData()
-        
-        //print(viewHelper.mLocations)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewHelper.mLocations.count
+        return StudentInformationModel.shared.recentStudentInformationList?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OnMapListCell")!
         
-        let loc = viewHelper.mLocations[indexPath.row]
-        cell.imageView?.image = UIImage(named: "pin")
-        cell.textLabel?.text = "\(loc.firstName) \(loc.lastName)"
+        let locs = StudentInformationModel.shared.recentStudentInformationList
+        if locs != nil && indexPath.row < locs!.count {
+            let loc = locs![indexPath.row]
+            cell.imageView?.image = UIImage(named: "pin")
+            cell.textLabel?.text = "\(loc.firstName) \(loc.lastName)"
+        } else {
+            cell.imageView?.image = UIImage(named: "pin")
+            cell.textLabel?.text = ""
+        }
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loc = viewHelper.mLocations[indexPath.row]
-        if let url = URL(string: loc.mediaURL) {
-            UIApplication.shared.open(url, options: [String : Any](), completionHandler: nil)
+        let locs = StudentInformationModel.shared.recentStudentInformationList
+        if locs != nil && indexPath.row < locs!.count {
+            let loc = locs![indexPath.row]
+            
+            if let url = URL(string: loc.mediaURL) {
+                UIApplication.shared.open(url, options: [String : Any](), completionHandler: nil)
+            }
         }
     }
     

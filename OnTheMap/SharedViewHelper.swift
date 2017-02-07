@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import FBSDKLoginKit
 
 protocol SharedViewHelperProtocol {
     func updateUI()
@@ -17,7 +16,6 @@ protocol SharedViewHelperProtocol {
 class SharedViewHelper : NSObject {
     
     var mController: SharedViewHelperProtocol!
-    var mLocations = [StudentInformation]()
     
     init(_ controller: SharedViewHelperProtocol) {
         mController = controller
@@ -49,7 +47,6 @@ class SharedViewHelper : NSObject {
     }
     
     func logout() {
-        FBSDKLoginManager().logOut()
         UdacityClient.getInstance().logout() {
             error, js in
             LoginViewController.showView(self.mController as! UIViewController, dismissCallee: true)
@@ -57,28 +54,28 @@ class SharedViewHelper : NSObject {
     }
     
     func refresh() {
-        loadRecentStudentLocations(reloaded: true)
+        StudentInformationModel.shared.refresh()
+        loadList()
+    }
+    
+    func loadList() {
+        StudentInformationModel.shared.getRecentStudentInformationList(callback: onDataRecentStudentInformationList)
     }
     
     func dropPin() {
         InformationPostingViewController.showView(self.mController as! UIViewController, dismissCallee: false)
     }
     
-    func loadRecentStudentLocations(reloaded: Bool) {
-        UdacityClient.getInstance().getRecentStudentLocations(cacheOk: !reloaded) { error, locs in
-            if let locs = locs {
-                self.mLocations = locs
-            } else {
-                self.mLocations = [StudentInformation]()
-                Utils.showAlert(
-                    self.mController as! UIViewController,
-                    title: "Loading Data",
-                    message: "Error Occurred: \(error ?? "unexpected error")"
-                )
-            }
-            
-            self.mController.updateUI()
+    func onDataRecentStudentInformationList(_ error: String?, _ locs: [StudentInformation]?) {
+        if error != nil || locs == nil {
+            Utils.showAlert(
+                self.mController as! UIViewController,
+                title: "Loading Data",
+                message: "Error Occurred: \(error ?? "unexpected error")"
+            )
         }
+        
+        self.mController.updateUI()
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FBSDKLoginKit
 
 class UdacityClient: NSObject {
     static var sInstance: UdacityClient? = nil
@@ -56,6 +57,8 @@ class UdacityClient: NSObject {
     }
     
     func loginWithFacebookToken(token: String, callback: @escaping (String?, [String: Any]?)->Void) {
+        me = nil
+        
         let auth = ["facebook_mobile" : ["access_token": token]]
         let authJs = try! JSONSerialization.data(withJSONObject: auth)
         
@@ -65,6 +68,29 @@ class UdacityClient: NSObject {
         request.httpBody = authJs
         
         executeRequest(request: request, filterRawData: UdacityClient.filter, callback: callback)
+    }
+    
+    func loginFacebook(callback: @escaping (String?, String?)->Void) {
+        if(FBSDKAccessToken.current() != nil) {
+            DispatchQueue.main.async {
+                callback(nil, FBSDKAccessToken.current().tokenString)
+            }
+            return
+        }
+        
+        let loginMgr = FBSDKLoginManager()
+        loginMgr.loginBehavior = FBSDKLoginBehavior.browser
+        loginMgr.logIn(withReadPermissions: ["public_profile"], from: nil) { (result, error) in
+            if error != nil || result == nil {
+                callback(error?.localizedDescription, nil)
+                print("FB Login Error \(error) \(result)")
+            } else if result!.isCancelled {
+                callback(nil, nil)
+            } else {
+                callback(nil, result!.token.tokenString)
+            }
+        }
+        
     }
     
     func newUdacityRequest(url: URL) -> NSMutableURLRequest {
@@ -98,6 +124,7 @@ class UdacityClient: NSObject {
             error, js in
             if error == nil && js != nil {
                 self.me = js
+                //print(js)
             }
             callback(error, js)
         }
@@ -105,6 +132,8 @@ class UdacityClient: NSObject {
     
     func logout(callback: @escaping (String?, [String: Any]?)->Void) {
         me = nil
+        
+        FBSDKLoginManager().logOut()
         
         let request = newUdacityRequest(url: URL(string: "https://www.udacity.com/api/session")!)
         request.httpMethod = "DELETE"
@@ -123,7 +152,7 @@ class UdacityClient: NSObject {
         let session = URLSession.shared
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
             if error != nil {
-                print(">>>Request Error - \(error!.localizedDescription)")
+                print(">>>Request Error - \(error)")
                 DispatchQueue.main.async {
                     callback(error!.localizedDescription, nil)
                 }
@@ -137,11 +166,11 @@ class UdacityClient: NSObject {
                     retJs = js
                 } else {
                     retError = "Invalid Response"
-                    print(">>>Invalid Response")
+                    print(">>>Invalid Response \(data)")
                 }
             } catch {
                 retError = "Parse Response Error - \(error.localizedDescription)"
-                print(">>>Parse Response Error - \(error.localizedDescription)")
+                print(">>>Parse Response Error - \(error)")
             }
             
             DispatchQueue.main.async {
@@ -187,6 +216,7 @@ class UdacityClient: NSObject {
                 callback(nil, locs)
             } else {
                 callback("Invalid Data", nil)
+                print("Invalid Data \(js)")
             }
         }
     }
